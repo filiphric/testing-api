@@ -1,0 +1,16 @@
+{
+  "name": "testing-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd trelloapp && npm start",
+    "postinstall": "cd trelloapp && npm install"
+  },
+  "keywords": [],
+  "author": "Filip Hric (https://filiphric.com/)",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^8.4.1"
+  }
+}
