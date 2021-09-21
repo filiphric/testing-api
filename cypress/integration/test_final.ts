@@ -100,7 +100,7 @@ it('change response body dynamically', () => {
     }, (req) => {
       req.reply(res => {
 
-        res.body[0].name = "hello protest"
+        res.body[0].name = "hello everyone!"
 
         return res.body
 
