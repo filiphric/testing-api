@@ -5,7 +5,7 @@ it('request', () => {
       method: 'POST',
       url: '/api/boards',
       body: {
-        name: "hello manila"
+        name: "hello there!"
       }
     })
     .then(board => {
