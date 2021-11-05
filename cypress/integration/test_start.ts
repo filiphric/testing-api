@@ -71,6 +71,21 @@ it('change response body dynamically', () => {
 
 });
 
+it('change query dynamically', () => {
+
+  cy
+    .intercept({
+      method: 'GET',
+      url: '/api/boards'
+    }, req => {
+      
+    }).as('matchedUrl')
+
+  cy
+    .visit('/')
+
+});
+
 it('change request headers', () => {
 
   cy
