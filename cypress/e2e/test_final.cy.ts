@@ -1,4 +1,7 @@
-it('request', () => {
+import spok from 'cy-spok'
+import boardSchema from '../support/boardSchema.json'
+
+it('request assertion', () => {
 
   cy
     .request({
@@ -16,9 +19,42 @@ it('request', () => {
 
     })
 
-  cy
-    .visit('/')
+})
 
+it('using plugins', () => {
+
+  const boardName = 'we created this using .request() command'
+
+  cy.api({
+    method: 'POST',
+    url: '/api/boards',
+    body: {
+      name: boardName
+    }
+  }).then(spok({
+    body: {
+      id: spok.type('number'),
+      name: boardName,
+      starred: false,
+      user: 0
+    },
+    status: 201
+  }))
+
+})
+
+it('json schemas', () => {
+
+  
+  cy
+    .request({
+      method: 'POST',
+      url: '/api/boards',
+      body: {
+        name: "hello there!"
+      }
+    })
+  .should('jsonSchema', boardSchema)
 
 });
 
@@ -129,17 +165,17 @@ it('change query dynamically', () => {
 
 });
 
-it.only('change request headers', () => {
+it('simulate a delay', () => {
 
-  cy
-    .intercept({
-      url: '**'
-    }, ({ headers }) => {
-      headers["Authorization"] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZpbGlwQGV4YW1wbGUuY29tIiwiaWF0IjoxNjE5NTQyODU0LCJleHAiOjE2MTk1NDY0NTQsInN1YiI6IjEifQ.eYnekf0zgLly6V61s43NfGUVYBMnnSkDNqfQJ9jExSI`;
-    }).as('matchedUrl')
+  cy.intercept({
+    method: 'GET',
+    url: '/api/boards'
+  }, req => {
+    req.reply( res => {
+      res.delay = 12000
+    })
+  }).as('getBoards')
 
-  cy
-    .visit('/')
-
+  cy.visit('/')
 
 });
