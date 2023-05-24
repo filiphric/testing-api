@@ -1,0 +1,22 @@
+{
+  "title": "Board",
+  "type": "object",
+  "required": ["name", "user", "starred", "created", "id"],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "user": {
+      "type": "number"
+    },
+    "starred": {
+      "type": "boolean"
+    },
+    "created": {
+      "type": "string"
+    },
+    "id": {
+      "type": "number"
+    }
+  }
+}

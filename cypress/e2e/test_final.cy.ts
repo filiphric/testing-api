@@ -1,5 +1,5 @@
 import spok from 'cy-spok'
-import boardSchema from '../support/boardSchema.json'
+import boardSchema from '../fixtures/boardSchema.json'
 
 it('request assertion', () => {
 
@@ -24,6 +24,13 @@ it('request assertion', () => {
 it('using plugins', () => {
 
   const boardName = 'we created this using .request() command'
+  const expectedBody = {
+    name: boardName,
+    user: 0,
+    starred: false,
+    created: "2022-08-25",
+    id: 1
+  }
 
   cy.api({
     method: 'POST',
@@ -45,16 +52,16 @@ it('using plugins', () => {
 
 it('json schemas', () => {
 
-  
   cy
     .request({
-      method: 'POST',
-      url: '/api/boards',
-      body: {
-        name: "hello there!"
+      method: 'GET',
+      url: '/api/boards/1',
+      headers: {
+        accept: "application/json"
       }
     })
-  .should('jsonSchema', boardSchema)
+    .its('body')
+    .should('jsonSchema', boardSchema)
 
 });
 
@@ -127,51 +134,13 @@ it('change response status', () => {
 
 });
 
-it('change response body dynamically', () => {
-
-  cy
-    .intercept({
-      method: 'GET',
-      url: '/api/boards'
-    }, (req) => {
-      req.reply(res => {
-
-        res.body[0].name = "hello everyone!"
-
-        return res.body
-
-      })
-    }).as('matchedUrl')
-
-  cy
-    .visit('/')
-
-});
-
-it('change query dynamically', () => {
-
-  cy
-    .intercept({
-      method: 'GET',
-      url: '/api/boards'
-    }, req => {
-      req.query = {
-        starred: 'true'
-      }
-    }).as('matchedUrl')
-
-  cy
-    .visit('/')
-
-});
-
 it('simulate a delay', () => {
 
   cy.intercept({
     method: 'GET',
     url: '/api/boards'
   }, req => {
-    req.reply( res => {
+    req.reply(res => {
       res.delay = 12000
     })
   }).as('getBoards')
